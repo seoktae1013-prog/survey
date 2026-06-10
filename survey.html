@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>언어와 인식 연구 설문</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F2;
+    --card: #FFFFFF;
+    --border: #E2E0D8;
+    --text: #1A1A18;
+    --sub: #6B6B64;
+    --muted: #A8A89E;
+    --accent: #2D5016;
+    --accent-light: #EAF0E3;
+    --font: 'Noto Serif KR', 'Georgia', serif;
+    --mono: 'Noto Sans KR', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Noto+Sans+KR:wght@400;500&display=swap');
+
+  body {
+    background: var(--bg);
+    font-family: var(--font);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  /* progress */
+  .prog-track {
+    height: 2px;
+    background: var(--border);
+    margin-bottom: 2.5rem;
+    border-radius: 2px;
+  }
+  .prog-fill {
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* screen label */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+
+  /* intro */
+  .intro-title {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .intro-body {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--sub);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .meta-list {
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .meta-row {
+    display: flex;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--sub);
+    margin-bottom: 0.6rem;
+    align-items: flex-start;
+  }
+  .meta-row::before {
+    content: '—';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* question */
+  .q-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+  .q-text {
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.55;
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* likert */
+  .likert {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .lopt {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    background: var(--card);
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text);
+    user-select: none;
+  }
+  .lopt:hover { border-color: var(--accent); background: var(--accent-light); }
+  .lopt.sel { border-color: var(--accent); background: var(--accent-light); }
+  .lopt.sel .ldot { background: var(--accent); border-color: var(--accent); }
+  .ldot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  /* passage */
+  .passage-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  .passage-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 1.5rem 1.5rem;
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    font-family: var(--mono);
+  }
+  .passage-note {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 2rem;
+  }
+
+  /* final q */
+  .scenario-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--sub);
+    margin-bottom: 1.5rem;
+  }
+  .final-q {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.55;
+    margin-bottom: 1.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* button */
+  .btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: background 0.15s, opacity 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .btn:hover { background: #1e3a0e; }
+  .btn:disabled {
+    background: var(--border);
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+
+  /* done */
+  .done-wrap { text-align: center; padding: 2rem 0; }
+  .done-mark {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 22px;
+    color: var(--accent);
+  }
+  .done-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    letter-spacing: -0.02em;
+  }
+  .done-sub {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--sub);
+    line-height: 1.7;
+  }
+
+  /* admin */
+  .admin-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .back-btn {
+    background: none;
+    border: none;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--sub);
+    cursor: pointer;
+    padding: 0;
+  }
+  .admin-title {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+  .stat-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+  .stat-lbl { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 4px; letter-spacing: 0.04em; }
+  .stat-val { font-size: 22px; font-weight: 600; color: var(--text); }
+
+  .group-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 10px;
+  }
+  .group-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+  .group-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 99px;
+    letter-spacing: 0.04em;
+  }
+  .tag-a { background: #EAF0E3; color: #2D5016; }
+  .tag-b { background: #FDE8E3; color: #8B2500; }
+  .tag-c { background: #E3EBF8; color: #1A3D7C; }
+  .tag-d { background: #FDF3E3; color: #7C4800; }
+
+  .group-desc { font-family: var(--mono); font-size: 12px; color: var(--sub); }
+  .group-count { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); }
+  .score-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .score-box {
+    background: var(--bg);
+    border-radius: 4px;
+    padding: 8px 10px;
+  }
+  .score-lbl { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 2px; }
+  .score-val { font-family: var(--mono); font-size: 15px; font-weight: 500; }
+
+  table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; }
+  th { text-align: left; padding: 8px 10px; color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--border); }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+
+  .tool-row { display: flex; gap: 8px; margin-top: 1rem; }
+  .tool-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--sub);
+    cursor: pointer;
+  }
+  .tool-btn:hover { background: var(--bg); }
+  .tool-btn.danger { color: #8B2500; border-color: #f0c0b0; }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 1.5rem 0 0.75rem;
+  }
+  .card-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .admin-link {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .admin-link span {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwXVTRi8qbCeOxOEuE2501IcSaWFQS9BiYg6LTSaj16y6Sco8jZQGjsMELMyHtxJayO/exec';
+const STORAGE_KEY = 'survey_v2';
+
+const QUESTIONS = [
+  { id: 'q1', num: 'Q1', text: '나는 평소 자연 개발, 자원 활용, 환경 보전 관련 내용을 자주 접하는 편이다.' },
+  { id: 'q2', num: 'Q2', text: '자연환경은 인간의 필요보다 우선적으로 보호되어야 한다.' },
+  { id: 'q3', num: 'Q3', text: '개발로 인해 자연이 일부 훼손되더라도, 그것이 더 많은 사람에게 이익이 된다면 받아들일 수 있다.' },
+];
+
+const LIKERT = ['매우 그렇다', '그렇다', '보통이다', '그렇지 않다', '매우 그렇지 않다'];
+const SCORES =  [5, 4, 3, 2, 1];
+
+const FINAL_LIKERT = ['반드시 해야 한다', '하는 편이 낫다', '판단하기 어렵다', '하지 않는 편이 낫다', '절대 안 된다'];
+const FINAL_SCORES = [5, 4, 3, 2, 1];
+
+const NATURE_TEXT = `최근 10년간 전 세계 삼림 면적은 서울 크기의 약 1,300배에 달하는 면적이 사라졌다. 벌목과 개발로 서식지를 잃은 동식물 종의 수는 매년 증가하고 있으며, 일부 종은 인간이 존재를 확인하기도 전에 멸종됐다. 한번 파괴된 생태계는 수백 년이 지나도 원래 상태로 돌아오지 않는다.`;
+
+const HUMAN_TEXT = `지난 100년간 인류의 평균 수명은 두 배 가까이 늘었다. 전기, 도로, 의료 인프라가 확충되면서 과거에는 치료조차 불가능했던 질병들이 완치되고 있다. 자원 개발과 산업화를 통해 수십억 명이 빈곤에서 벗어났으며, 지금 이 순간에도 개발이 진행 중인 지역에서는 새로운 일자리와 인프라가 만들어지고 있다.`;
+
+const SCENARIO = `정부가 국가 전력 수요의 30%를 해결하기 위해 댐 건설을 추진하고 있다. 완공되면 에너지 자립도가 크게 높아지지만, 건설 예정지의 원시 산림과 하천이 수몰되어 영구적으로 사라진다. 현재로선 대안이 없다.`;
+
+function loadLocal() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch { return []; }
+}
+function saveLocal(r) {
+  const arr = loadLocal(); arr.push(r);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+function calcGroup(q2, q3) {
+  // q3 is reverse-scored (개발 수용)
+  const score = q2 + (6 - q3);
+  const isEco = score >= 7;
+  const nature = Math.random() < 0.5;
+  let group;
+  if (isEco && nature)  group = 'A';
+  if (isEco && !nature) group = 'B';
+  if (!isEco && !nature) group = 'C';
+  if (!isEco && nature) group = 'D';
+  return { group, isEco, nature, score };
+}
+
+let S = { screen: 'intro', step: 0, ans: {}, group: null, isEco: null, nature: null, preScore: null };
+
+function render() {
+  const app = document.getElementById('app');
+  if (S.screen === 'intro')   app.innerHTML = tmplIntro();
+  else if (S.screen === 'q')  app.innerHTML = tmplQ();
+  else if (S.screen === 'passage') app.innerHTML = tmplPassage();
+  else if (S.screen === 'final')   app.innerHTML = tmplFinal();
+  else if (S.screen === 'done')    app.innerHTML = tmplDone();
+  else if (S.screen === 'admin')   app.innerHTML = tmplAdmin();
+  bindEvents();
+}
+
+function prog(n, total) {
+  const pct = Math.round((n / total) * 100);
+  return `<div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>`;
+}
+
+function tmplIntro() {
+  return `
+    ${prog(0, 5)}
+    <div class="eyebrow">언어와 인식 연구</div>
+    <h1 class="intro-title">자연과 개발에 관한<br>인식 조사</h1>
+    <p class="intro-body">이 설문은 환경과 개발에 관한 여러분의 생각을 알아보기 위한 연구입니다. 솔직하게 답변해 주세요.</p>
+    <div class="meta-list">
+      <div class="meta-row">소요 시간: 약 3~5분</div>
+      <div class="meta-row">총 3단계로 구성됩니다</div>
+      <div class="meta-row">모든 응답은 익명으로 처리됩니다</div>
+    </div>
+    <button class="btn" id="startBtn">시작하기</button>
+    <div class="admin-link"><span id="adminLink">연구자 페이지</span></div>
+  `;
+}
+
+function tmplQ() {
+  const q = QUESTIONS[S.step];
+  const sel = S.ans[q.id];
+  return `
+    ${prog(S.step + 1, 5)}
+    <div class="q-num">${q.num} / ${QUESTIONS.length}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="likert">
+      ${LIKERT.map((l, i) => `
+        <div class="lopt${sel === SCORES[i] ? ' sel' : ''}" data-score="${SCORES[i]}" data-qid="${q.id}">
+          <div class="ldot"></div>${l}
+        </div>`).join('')}
+    </div>
+    <button class="btn" id="nextBtn" ${sel == null ? 'disabled' : ''}>다음</button>
+  `;
+}
+
+function tmplPassage() {
+  const isNature = S.nature;
+  const text = isNature ? NATURE_TEXT : HUMAN_TEXT;
+  return `
+    ${prog(4, 5)}
+    <div class="eyebrow">읽기 자료</div>
+    <p style="font-family:var(--mono);font-size:14px;color:var(--sub);line-height:1.7;margin-bottom:1.5rem">아래 글을 천천히 읽어주세요.</p>
+    <div class="passage-box">${text}</div>
+    <p class="passage-note">읽기를 마치면 다음을 눌러주세요.</p>
+    <button class="btn" id="passNext">다음</button>
+  `;
+}
+
+function tmplFinal() {
+  const sel = S.ans['q5'];
+  return `
+    ${prog(5, 5)}
+    <div class="q-num">마지막 질문</div>
+    <div class="scenario-box">${SCENARIO}</div>
+    <div class="final-q">당신은 이 댐을 건설해야 한다고 생각하는가?</div>
+    <div class="likert">
+      ${FINAL_LIKERT.map((l, i) => `
+        <div class="lopt${sel === FINAL_SCORES[i] ? ' sel' : ''}" data-score="${FINAL_SCORES[i]}" data-qid="q5">
+          <div class="ldot"></div>${l}
+        </div>`).join('')}
+    </div>
+    <button class="btn" id="submitBtn" ${sel == null ? 'disabled' : ''}>제출하기</button>
+  `;
+}
+
+function tmplDone() {
+  return `
+    <div class="done-wrap">
+      <div class="done-mark">✓</div>
+      <div class="done-title">응답이 완료되었습니다</div>
+      <div class="done-sub">참여해 주셔서 감사합니다.<br>여러분의 응답은 언어와 인식에 관한<br>연구에 활용됩니다.</div>
+    </div>
+  `;
+}
+
+function tmplAdmin() {
+  const results = loadLocal();
+  const groups = { A:[], B:[], C:[], D:[] };
+  results.forEach(r => groups[r.group] && groups[r.group].push(r));
+  const avg = arr => arr.length ? (arr.reduce((s,r) => s + r.q5, 0)/arr.length).toFixed(2) : '—';
+  const avgPre = arr => arr.length ? (arr.reduce((s,r) => s + r.preScore, 0)/arr.length).toFixed(1) : '—';
+
+  const gInfo = {
+    A: { label: '친환경 + 자연친화 글', cls: 'tag-a' },
+    B: { label: '친환경 + 인간중심 글', cls: 'tag-b' },
+    C: { label: '개발우호 + 인간중심 글', cls: 'tag-c' },
+    D: { label: '개발우호 + 자연친화 글', cls: 'tag-d' },
+  };
+
+  const groupCards = ['A','B','C','D'].map(g => `
+    <div class="group-card">
+      <div class="group-head">
+        <div>
+          <span class="group-tag ${gInfo[g].cls}">집단 ${g}</span>
+          <span class="group-desc" style="margin-left:8px">${gInfo[g].label}</span>
+        </div>
+        <span class="group-count">${groups[g].length}명</span>
+      </div>
+      <div class="score-row">
+        <div class="score-box"><div class="score-lbl">사전 평균</div><div class="score-val">${avgPre(groups[g])}</div></div>
+        <div class="score-box"><div class="score-lbl">최종 평균</div><div class="score-val">${avg(groups[g])}</div></div>
+      </div>
+    </div>`).join('');
+
+  const rows = results.map((r,i) => `
+    <tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td><span class="group-tag ${gInfo[r.group].cls}">${r.group}</span></td>
+      <td>${r.preScore}</td>
+      <td>${r.q5}</td>
+      <td style="color:var(--muted)">${new Date(r.timestamp).toLocaleDateString('ko-KR')}</td>
+    </tr>`).join('');
+
+  return `
+    <div class="admin-header">
+      <button class="back-btn" id="backBtn">← 돌아가기</button>
+      <div class="admin-title">연구자 데이터</div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-lbl">전체 응답</div><div class="stat-val">${results.length}명</div></div>
+      <div class="stat-box"><div class="stat-lbl">최종 전체 평균</div><div class="stat-val">${avg(results)}</div></div>
+    </div>
+    ${groupCards}
+    <div class="section-title">개별 응답</div>
+    <div class="card-wrap">
+      <table>
+        <tr><th>#</th><th>집단</th><th>사전</th><th>최종</th><th>날짜</th></tr>
+        ${rows || '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:1.5rem">아직 응답이 없습니다</td></tr>'}
+      </table>
+    </div>
+    <div class="tool-row">
+      <button class="tool-btn" id="exportBtn">JSON 복사</button>
+      <button class="tool-btn danger" id="clearBtn">데이터 초기화</button>
+    </div>
+  `;
+}
+
+function bindEvents() {
+  // intro
+  const startBtn = document.getElementById('startBtn');
+  if (startBtn) startBtn.onclick = () => { S.screen = 'q'; S.step = 0; render(); };
+
+  const adminLink = document.getElementById('adminLink');
+  if (adminLink) adminLink.onclick = () => { S.screen = 'admin'; render(); };
+
+  // likert options
+  document.querySelectorAll('.lopt').forEach(el => {
+    el.onclick = () => {
+      const qid = el.dataset.qid;
+      const score = parseInt(el.dataset.score);
+      S.ans[qid] = score;
+      document.querySelectorAll(`.lopt`).forEach(o => {
+        if (o.dataset.qid === qid) o.classList.remove('sel');
+      });
+      el.classList.add('sel');
+      const btn = document.getElementById('nextBtn') || document.getElementById('submitBtn');
+      if (btn) btn.disabled = false;
+    };
+  });
+
+  // next q
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) nextBtn.onclick = () => {
+    if (S.step < QUESTIONS.length - 1) {
+      S.step++;
+      render();
+    } else {
+      const { group, isEco, nature, score } = calcGroup(S.ans.q2, S.ans.q3);
+      S.group = group; S.isEco = isEco; S.nature = nature; S.preScore = score;
+      S.screen = 'passage';
+      render();
+    }
+  };
+
+  // passage next
+  const passNext = document.getElementById('passNext');
+  if (passNext) passNext.onclick = () => { S.screen = 'final'; render(); };
+
+  // submit
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) submitBtn.onclick = async () => {
+    submitBtn.disabled = true;
+    submitBtn.textContent = '저장 중...';
+    const result = {
+      timestamp: new Date().toISOString(),
+      q1: S.ans.q1,
+      q2: S.ans.q2,
+      q3: S.ans.q3,
+      q5: S.ans.q5,
+      group: S.group,
+      preScore: S.preScore,
+      passage: S.nature ? 'nature' : 'human',
+    };
+    saveLocal(result);
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(result),
+      });
+    } catch(e) { console.warn('sheet upload failed', e); }
+    S.screen = 'done';
+    render();
+  };
+
+  // admin
+  const backBtn = document.getElementById('backBtn');
+  if (backBtn) backBtn.onclick = () => { S.screen = 'intro'; render(); };
+
+  const exportBtn = document.getElementById('exportBtn');
+  if (exportBtn) exportBtn.onclick = () => {
+    navigator.clipboard.writeText(JSON.stringify(loadLocal(), null, 2))
+      .then(() => alert('클립보드에 복사됐습니다.'));
+  };
+
+  const clearBtn = document.getElementById('clearBtn');
+  if (clearBtn) clearBtn.onclick = () => {
+    if (confirm('모든 로컬 데이터를 삭제하시겠습니까?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      render();
+    }
+  };
+}
+
+render();
+</script>
+</body>
+</html>
